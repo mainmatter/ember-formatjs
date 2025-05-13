@@ -6,22 +6,7 @@ Ast plugin replaces x helper with t helper.
 {{x "example text" "example description"}}
 {{t "key from formatjs}}
 
-## When using vite
-
-In your vite.config.mjs
-
-```js
-import { i18n } from 'ember-intl/vite';
-
-export default defineConfig({
-	plugins: [
-		// ...
-		i18n(),
-	],
-});
-```
-
-## when using babel
+## When using Babel
 
 useful in libraries,
 in your babel config, you may want both the JS and template transform plugins:
@@ -42,7 +27,7 @@ in your babel config, you may want both the JS and template transform plugins:
 }
 ```
 
-## options in ember-cli-build
+## Options in ember-cli-build
 
 Custom idInterpolationPattern can be set in ember-cli-build if needed. It should be the same pattern used for en-en.json extraction.
 

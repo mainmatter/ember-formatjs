@@ -4,6 +4,7 @@ const formatMessageReplacePlugin = require('../../../lib/babel/format-message-re
 
 pluginTester({
 	plugin: formatMessageReplacePlugin,
+	snapshot: true,
 	pluginOptions: {
 		idInterpolationPattern: '[sha512:contenthash:base64:6]',
 		preserveWhitespace: false,
