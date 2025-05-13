@@ -1,0 +1,15 @@
+# dependencies
+/node_modules/
+pnpm-lock.yaml
+
+# misc
+!.*
+.eslintcache
+
+CHANGELOG.md
+
+# Node tests rely on babel-plugin-tester to output snapshots
+# prettier should not touch these outputs or there will be a mismatch
+# between expected and actual results.
+*/**/output.js
+*/**/output.ts
