@@ -1,0 +1,9 @@
+# dependencies
+/node_modules/
+pnpm-lock.yaml
+
+# misc
+!.*
+.eslintcache
+
+CHANGELOG.md

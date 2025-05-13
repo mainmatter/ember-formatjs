@@ -9,7 +9,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 const VALID_EXT = ['.ts', '.js', '.hbs', '.gjs', '.gts', '.html'];
 
 function isFileRelevant(filePath) {
-	const isValid = VALID_EXT.some((ext) => filePath.endsWith(ext));
+	const isValid = VALID_EXT.some(ext => filePath.endsWith(ext));
 
 	return isValid;
 }
@@ -81,7 +81,7 @@ const unplugin = createUnplugin((/* options */) => {
 					src: 'locale/en-US.json',
 					dest: 'translations',
 					rename: 'en-us.json',
-					transform: (content) => {
+					transform: content => {
 						const parsed = JSON.parse(content);
 
 						const result = {};
