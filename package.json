@@ -16,7 +16,6 @@
     "lint:js:fix": "eslint --fix .",
     "lint:prettier": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
-    "start": "ember serve",
     "test:node": "mocha node-tests"
   },
   "dependencies": {
@@ -28,10 +27,7 @@
     "ember-cli-babel": "8.2.0",
     "ember-cli-babel-plugin-helpers": "1.1.1",
     "ember-cli-htmlbars": "6.3.0",
-    "ember-cli-version-checker": "5.1.2",
-    "execa": "9.5.2",
-    "unplugin": "2.3.0",
-    "vite-plugin-static-copy": "2.3.0"
+    "ember-cli-version-checker": "5.1.2"
   },
   "devDependencies": {
     "@babel/core": "7.26.10",
@@ -43,7 +39,6 @@
     "@eslint/js": "8.57.1",
     "@glimmer/component": "1.1.2",
     "@glimmer/tracking": "1.1.2",
-    "@ijlee2-frontend-configs/prettier": "^0.2.3",
     "@types/qunit": "2.19.12",
     "@types/rsvp": "4.0.9",
     "babel-plugin-tester": "12.0.0-canary.2",
