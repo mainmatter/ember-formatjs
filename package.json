@@ -12,11 +12,11 @@
   "license": "MIT",
   "author": "",
   "scripts": {
-    "start": "ember serve",
     "lint:js": "eslint .",
     "lint:js:fix": "eslint --fix .",
     "lint:prettier": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
+    "start": "ember serve",
     "test:node": "mocha node-tests"
   },
   "dependencies": {
@@ -76,6 +76,7 @@
     "prettier-plugin-ember-template-tag": "2.0.5",
     "qunit": "2.21.0",
     "qunit-dom": "3.4.0",
+    "release-plan": "^0.16.0",
     "webpack": "5.99.6"
   },
   "peerDependencies": {
