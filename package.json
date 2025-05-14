@@ -1,6 +1,6 @@
 {
   "name": "ember-formatjs",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Combine formatjs API with ember-intl",
   "keywords": [
     "ember-addon"

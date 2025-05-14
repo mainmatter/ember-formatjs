@@ -1,0 +1,22 @@
+{
+  "solution": {
+    "ember-formatjs": {
+      "impact": "minor",
+      "oldVersion": "0.0.0",
+      "newVersion": "0.1.0",
+      "tagName": "latest",
+      "constraints": [
+        {
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
+        },
+        {
+          "impact": "patch",
+          "reason": "Appears in changelog section :house: Internal"
+        }
+      ],
+      "pkgJSONPath": "./package.json"
+    }
+  },
+  "description": "## Release (2025-05-14)\n\n* ember-formatjs 0.1.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-formatjs`\n  * [#5](https://github.com/mainmatter/ember-formatjs/pull/5) Cleanup dependencies ([@BlueCutOfficial](https://github.com/BlueCutOfficial))\n  * [#1](https://github.com/mainmatter/ember-formatjs/pull/1) Init repo ([@BlueCutOfficial](https://github.com/BlueCutOfficial))\n\n#### :house: Internal\n* `ember-formatjs`\n  * [#3](https://github.com/mainmatter/ember-formatjs/pull/3) Setup release-plan ([@BlueCutOfficial](https://github.com/BlueCutOfficial))\n\n#### Committers: 1\n- Marine Dunstetter ([@BlueCutOfficial](https://github.com/BlueCutOfficial))\n"
+}
