@@ -2,6 +2,17 @@
 
 ## Release (2025-05-14)
 
+* ember-formatjs 0.1.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-formatjs`
+  * [#6](https://github.com/mainmatter/ember-formatjs/pull/6) Remove ember-source peer dependency ([@BlueCutOfficial](https://github.com/BlueCutOfficial))
+
+#### Committers: 1
+- Marine Dunstetter ([@BlueCutOfficial](https://github.com/BlueCutOfficial))
+
+## Release (2025-05-14)
+
 * ember-formatjs 0.1.0 (minor)
 
 #### :rocket: Enhancement
