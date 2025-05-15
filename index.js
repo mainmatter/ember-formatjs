@@ -1,27 +1,14 @@
 'use strict';
 
 const path = require('path');
-const LangConvert = require('./lib/lang-convert');
 const { addPlugin, hasPlugin } = require('ember-cli-babel-plugin-helpers');
 const defaults = require('./lib/babel/defaults');
-
-const { join } = path;
 
 module.exports = {
 	name: require('./package').name,
 
 	isDevelopingAddon() {
 		return true;
-	},
-
-	treeForTranslations() {
-		if (!this.shouldTranspile()) {
-			return;
-		}
-
-		const appPrefix = join(this.project.configPath(), '../..');
-
-		return new LangConvert(join(appPrefix, 'locale'));
 	},
 
 	included(...args) {
