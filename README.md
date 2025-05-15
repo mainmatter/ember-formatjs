@@ -35,9 +35,7 @@ ember install ember-intl ember-formatjs
 
 ### 2. Setup
 
-- Configure your locale following [`ember-intl`](https://ember-intl.github.io/ember-intl/docs/quickstart#set-your-app-s-locale) starter guide.
-
-- At the root of your app, create a `locale` folder.
+Configure your locale following [`ember-intl`](https://ember-intl.github.io/ember-intl/docs/quickstart#set-your-app-s-locale) starter guide.
 
 ### 3. Write messages
 
