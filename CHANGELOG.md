@@ -2,6 +2,23 @@
 
 ## Release (2025-05-15)
 
+* ember-formatjs 0.1.3 (patch)
+
+#### :bug: Bug Fix
+* `ember-formatjs`
+  * [#13](https://github.com/mainmatter/ember-formatjs/pull/13) remove lang-convert broccoli plugin ([@mansona](https://github.com/mansona))
+
+#### :memo: Documentation
+* `ember-formatjs`
+  * [#14](https://github.com/mainmatter/ember-formatjs/pull/14) add a section documentating a workflow with no TMS ([@mansona](https://github.com/mansona))
+  * [#11](https://github.com/mainmatter/ember-formatjs/pull/11) Docs/ first iteration on reworking the README ([@BlueCutOfficial](https://github.com/BlueCutOfficial))
+
+#### Committers: 2
+- Chris Manson ([@mansona](https://github.com/mansona))
+- Marine Dunstetter ([@BlueCutOfficial](https://github.com/BlueCutOfficial))
+
+## Release (2025-05-15)
+
 * ember-formatjs 0.1.2 (patch)
 
 #### :house: Internal
