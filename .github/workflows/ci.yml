@@ -8,7 +8,7 @@ on:
   pull_request: {}
 
 env:
-  NODE_VERSION: 20
+  NODE_VERSION: 24
 
 jobs:
   lint:
@@ -21,19 +21,47 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
       - run: pnpm lint:js
       - run: pnpm lint:prettier
 
   test:
-    name: Node Tests
+    name: Node ${{ matrix.node-version }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [22, 24, 26]
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: ${{ matrix.node-version }}
           cache: pnpm
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:node
+
+  test-lower-bounds:
+    name: 'Node 20.19, @babel/core 7'
+    runs-on: ubuntu-latest
+    # The packages declare `^20.19.0 || >=22.12.0` for Node and `^7.0.0 || ^8.0.0` for
+    # @babel/core. The matrix above runs on Babel 8, which itself needs Node 22, so this
+    # job holds the lower end of both ranges: 20.19.0 is where require(esm) is unflagged,
+    # which loading the ESM-only @formatjs/ts-transformer from CJS depends on.
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.0
+          cache: pnpm
+      # A plain `pnpm add -w` does not reach the plugin package, where pnpm installs the
+      # @babel/core peer itself, nor babel-plugin-tester. An override replaces it everywhere.
+      - run: |
+          printf 'overrides:\n  "@babel/core": ^7\n  "@babel/plugin-transform-typescript": ^7\n' >> pnpm-workspace.yaml
+      - run: pnpm install --no-frozen-lockfile
+      - name: Assert Babel 7 is what the tests load
+        working-directory: packages/babel-plugin-ember-formatjs
+        run: node -e "const v = require('@babel/core').version; if (!v.startsWith('7.')) throw new Error('expected @babel/core 7, got ' + v); console.log('@babel/core', v)"
       - run: pnpm test:node

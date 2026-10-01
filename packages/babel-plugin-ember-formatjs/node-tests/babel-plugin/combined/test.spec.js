@@ -1,6 +1,6 @@
 const { join } = require('path');
 const pluginTester = require('babel-plugin-tester').pluginTester;
-const plugin = require('../../../babel-plugin');
+const plugin = require('../../../src/index.cjs');
 
 pluginTester({
 	plugin,

@@ -21,16 +21,68 @@ intl.formatMessage({
 
 `ember-formatjs` integrates `ember-intl` and `formatjs` to make use of the inline translation strings recommended by FormatJs while sticking to `ember-intl` to manage translations at runtime.
 
+## Packages
+
+This repository publishes two packages. The transforms live in one, the classic build wiring in the other, so that a Vite app never installs an ember-cli addon it cannot use.
+
+| package                       | what it is                                | who installs it       |
+| ----------------------------- | ----------------------------------------- | --------------------- |
+| `babel-plugin-ember-formatjs` | the transforms, no Ember dependencies     | Embroider + Vite apps |
+| `ember-formatjs`              | a thin ember-cli addon that wires them up | classic apps          |
+
+`ember-formatjs` depends on `babel-plugin-ember-formatjs`, so a classic app installs one package and gets both.
+
 ## Compatibility
 
 - Ember classic >= 3.28
+- Embroider + Vite
+- `@babel/core` 7 or 8
+- Node 20.19+ or 22.12+
 
 ## Usage
 
 ### 1. Install
 
+In a classic (ember-cli / broccoli) app, installing is all the setup there is:
+
 ```
 ember install ember-intl ember-formatjs
+```
+
+In an Embroider + Vite app, install the plugin package and wire it into your Babel config. This keeps the classic addon out of the build entirely, and works whether or not the app still uses `@embroider/compat`:
+
+```
+pnpm add -D babel-plugin-ember-formatjs
+```
+
+```js
+// babel.config.mjs
+import { createRequire } from 'node:module';
+import { babelCompatSupport, templateCompatSupport } from '@embroider/compat/babel';
+
+const require = createRequire(import.meta.url);
+const formatjs = require('babel-plugin-ember-formatjs');
+const formatjsTemplateTransform = require('babel-plugin-ember-formatjs/template-plugin');
+
+export default {
+	plugins: [
+		// Rewrites `intl.formatMessage({ defaultMessage })` and the `format-message`
+		// import. Must run before TypeScript and template compilation.
+		formatjs,
+		// ... your other plugins
+		[
+			'module:babel-plugin-ember-template-compilation',
+			{
+				transforms: [
+					...templateCompatSupport(),
+					// Rewrites `{{format-message 'Hello'}}` during precompilation.
+					formatjsTemplateTransform(),
+				],
+			},
+		],
+		...babelCompatSupport(),
+	],
+};
 ```
 
 ### 2. Setup
@@ -147,4 +199,17 @@ let app = new EmberApp(defaults, {
 		idInterpolationPattern: '[sha512:contenthash:base64:6]', //this interpolation pattern is default
 	},
 });
+```
+
+Under Embroider + Vite the same option is passed to each plugin directly. Both take it, and both must agree:
+
+```js
+const options = { idInterpolationPattern: '[sha512:contenthash:base64:6]' };
+
+export default {
+	plugins: [
+		[formatjs, options],
+		['module:babel-plugin-ember-template-compilation', { transforms: [formatjsTemplateTransform(options)] }],
+	],
+};
 ```

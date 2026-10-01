@@ -1,17 +1,13 @@
 const { join } = require('path');
 const pluginTester = require('babel-plugin-tester').pluginTester;
-const formatMessageReplacePlugin = require('../../../lib/babel/format-message-replace-strings');
+const plugin = require('../../../src/format-message-import-to-t.cjs');
 
 pluginTester({
-	plugin: formatMessageReplacePlugin,
-	snapshot: true,
+	plugin,
 	pluginOptions: {
 		idInterpolationPattern: '[sha512:contenthash:base64:6]',
 		preserveWhitespace: false,
 	},
-	pluginName: 'format message replace',
+	pluginName: 'formatMessage to import t',
 	fixtures: join(__dirname, 'fixtures'),
-	babelOptions: {
-		plugins: ['@babel/plugin-transform-typescript'],
-	},
 });

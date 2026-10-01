@@ -2,14 +2,23 @@
 
 const path = require('path');
 const { addPlugin, hasPlugin } = require('ember-cli-babel-plugin-helpers');
-const defaults = require('./lib/babel/defaults');
+const defaults = require('babel-plugin-ember-formatjs/defaults');
 
+/**
+ * Classic (ember-cli / broccoli) wiring for `babel-plugin-ember-formatjs`.
+ *
+ * The transforms themselves live in that package and carry no Ember dependencies.
+ * This addon exists only because a classic build has no other way to register a
+ * template AST transform: `ember-cli-htmlbars` reads its plugin registry inside its own
+ * `included()` hook, which has already run by the time `ember-cli-build.js` gets the app
+ * back from the `EmberApp` constructor.
+ *
+ * Embroider + Vite apps should wire the same two plugins directly in `babel.config.*`
+ * instead; see the README. `@embroider/compat` can pick up this addon's registrations
+ * through `babelCompatSupport()` and `templateCompatSupport()`, but that path is untested.
+ */
 module.exports = {
 	name: require('./package').name,
-
-	isDevelopingAddon() {
-		return true;
-	},
 
 	included(...args) {
 		this._super.included.apply(this, ...args);
@@ -25,12 +34,12 @@ module.exports = {
 	},
 
 	_setupBabel() {
-		const pluginPath = require.resolve('./babel-plugin');
+		const pluginPath = require.resolve('babel-plugin-ember-formatjs');
 		const config = this.addonOptions();
 		const app = this._findHost();
 
 		if (!hasPlugin(app, pluginPath)) {
-			addPlugin(app, [pluginPath, config, 'ember-intl/ember-formatjs']);
+			addPlugin(app, [pluginPath, config, 'ember-formatjs']);
 		}
 	},
 
@@ -51,11 +60,11 @@ module.exports = {
 
 	_buildPlugin(options) {
 		return {
-			name: 'ember-intl/template-plugin',
+			name: 'ember-formatjs/template-plugin',
 			ext: 'hbs',
-			plugin: require('./template-plugin')(options),
+			plugin: require('babel-plugin-ember-formatjs/template-plugin')(options),
 			baseDir: () => {
-				return path.resolve('./');
+				return path.resolve(__dirname);
 			},
 		};
 	},

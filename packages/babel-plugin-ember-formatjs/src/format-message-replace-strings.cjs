@@ -1,6 +1,9 @@
+'use strict';
+
 const { declare } = require('@babel/helper-plugin-utils');
 const { interpolateName } = require('@formatjs/ts-transformer');
-const defaults = require('./defaults');
+const defaults = require('./defaults.cjs');
+const { isAppCode } = require('./is-app-code.cjs');
 
 const getVariableValue = (args, variable, preserveWhitespace) => {
 	const property = args?.properties?.find?.(p => p.key?.name === variable);
@@ -24,6 +27,22 @@ const getVariableValue = (args, variable, preserveWhitespace) => {
 };
 
 /**
+ * Only the FormatJS authoring shape is ours to rewrite:
+ *
+ *     intl.formatMessage({ defaultMessage: 'Hello' })
+ *
+ * `ember-intl`'s own `formatMessage(descriptor, values)` signature takes the descriptor
+ * as a variable rather than an object literal. Matching on the literal keeps us off it.
+ */
+const isFormatJsDescriptor = firstArgument => {
+	if (firstArgument?.type !== 'ObjectExpression') {
+		return false;
+	}
+
+	return firstArgument.properties?.some?.(p => p.key?.name === 'defaultMessage' || p.key?.name === 'id');
+};
+
+/**
  * This plugin is specifically for updating the version of formatMessage from the intl service.
  *
  * e.g.: this.intl.formatMessage(...)
@@ -35,19 +54,30 @@ module.exports = declare((api, pluginOptions) => {
 	const idInterpolationPattern = options.idInterpolationPattern;
 
 	return {
-		name: 'ember-intl/formatjs/format-message-replace',
+		name: 'ember-formatjs/format-message-replace',
 
 		visitor: {
-			CallExpression(path) {
+			CallExpression(path, state) {
+				const filename = state?.filename ?? api.File?.path;
+
+				if (!isAppCode(filename)) {
+					return;
+				}
+
 				if (
 					(path.node?.callee?.object?.name === 'intl' || // intl.formatMessage()
 						path.node?.callee?.object?.property?.name === 'intl') && // <obj>.intl.formatMessage()
 					path.node?.callee?.property?.name === 'formatMessage'
 				) {
-					path.node.callee.property.name = 't';
-
 					const args = path.node?.arguments;
 					const firstHash = args?.[0];
+
+					if (!isFormatJsDescriptor(firstHash)) {
+						return;
+					}
+
+					path.node.callee.property.name = 't';
+
 					const valuesHash = args?.[1];
 					const defaultMessage = getVariableValue(firstHash, 'defaultMessage', preserveWhitespace);
 					const description = getVariableValue(firstHash, 'description', true);
@@ -55,7 +85,7 @@ module.exports = declare((api, pluginOptions) => {
 
 					const id = interpolateName(
 						{
-							resourcePath: api.File.path,
+							resourcePath: filename,
 						},
 						idInterpolationPattern,
 						{
@@ -63,13 +93,14 @@ module.exports = declare((api, pluginOptions) => {
 						},
 					);
 
-					path.node.arguments[0] = {
+					const key = {
 						type: 'StringLiteral',
 						value: translationId || id,
 					};
 
-					path.node.arguments[1] = valuesHash;
-					path.node.arguments[2] = null;
+					// Assigning into `arguments` by index leaves holes behind when the call had
+					// fewer arguments than we write, which prints as `intl.t('key', )`.
+					path.node.arguments = valuesHash ? [key, valuesHash] : [key];
 				}
 			},
 		},
