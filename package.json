@@ -34,7 +34,7 @@
     "globals": "^17.13.0",
     "mocha": "12.0.1",
     "prettier": "3.9.6",
-    "release-plan": "^0.16.0"
+    "release-plan": "^0.20.1"
   },
   "peerDependencies": {
     "ember-intl": "^7.1.8 || ^8.0.0 || ^9.0.0"
