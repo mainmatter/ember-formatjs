@@ -1,4 +1,5 @@
 const assert = require('node:assert/strict');
+const { tmpdir } = require('node:os');
 const { join } = require('node:path');
 
 const addon = require('../../index');
@@ -62,6 +63,19 @@ describe('addon: classic wiring', function () {
 		assert.equal(requireFile, require.resolve('../../index'));
 		assert.equal(rebuilt.name, entry.name);
 		assert.equal(rebuilt.ext, entry.ext);
+	});
+
+	it('gives ember-cli-htmlbars this package to hash for its cache key', function () {
+		const [{ entry }] = registered(build());
+		const cwd = process.cwd();
+
+		// The build runs from the app, not from this package.
+		process.chdir(tmpdir());
+		try {
+			assert.equal(entry.baseDir(), join(__dirname, '..', '..'));
+		} finally {
+			process.chdir(cwd);
+		}
 	});
 
 	it('falls back to the defaults', function () {

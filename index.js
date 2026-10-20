@@ -1,6 +1,5 @@
 'use strict';
 
-const path = require('path');
 const { addPlugin, hasPlugin } = require('ember-cli-babel-plugin-helpers');
 const defaults = require('./lib/babel/defaults');
 
@@ -55,7 +54,7 @@ module.exports = {
 			ext: 'hbs',
 			plugin: require('./template-plugin')(options),
 			baseDir: () => {
-				return path.resolve('./');
+				return __dirname;
 			},
 		};
 	},
