@@ -24,8 +24,8 @@
     "ember-cli-babel-plugin-helpers": "1.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7.26.10",
-    "@babel/plugin-transform-typescript": "7.29.9",
+    "@babel/core": "8.0.5",
+    "@babel/plugin-transform-typescript": "8.0.5",
     "@eslint/js": "10.0.1",
     "babel-plugin-ember-template-compilation": "4.0.1",
     "babel-plugin-ember-template-compilation-v2": "npm:babel-plugin-ember-template-compilation@2.4.1",
