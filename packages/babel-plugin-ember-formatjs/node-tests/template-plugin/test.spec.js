@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const { join } = require('node:path');
 const babel = require('@babel/core');
 
-const buildTransform = require('../../template-plugin');
+const buildTransform = require('../../src/template-plugin');
 const { name: packageName } = require('../../package.json');
 
 /**

@@ -1,6 +1,6 @@
 const { join } = require('path');
 const pluginTester = require('babel-plugin-tester').pluginTester;
-const formatMessageReplacePlugin = require('../../../lib/babel/format-message-replace-strings');
+const formatMessageReplacePlugin = require('../../../src/format-message-replace-strings');
 
 pluginTester({
 	plugin: formatMessageReplacePlugin,

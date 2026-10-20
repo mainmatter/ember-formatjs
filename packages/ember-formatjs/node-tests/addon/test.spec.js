@@ -3,7 +3,7 @@ const { tmpdir } = require('node:os');
 const { join } = require('node:path');
 
 const addon = require('../../index');
-const defaults = require('../../lib/babel/defaults');
+const defaults = require('babel-plugin-ember-formatjs/defaults');
 
 // The parts under test never reach the rest of ember-cli, so a stub host is enough.
 function build(app = { options: {} }) {
@@ -98,6 +98,6 @@ describe('addon: classic wiring', function () {
 		subject._setupBabel();
 
 		assert.equal(app.options.babel.plugins.length, 1);
-		assert.equal(app.options.babel.plugins[0][0], require.resolve('../../babel-plugin'));
+		assert.equal(app.options.babel.plugins[0][0], require.resolve('babel-plugin-ember-formatjs'));
 	});
 });

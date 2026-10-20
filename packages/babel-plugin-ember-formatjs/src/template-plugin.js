@@ -1,7 +1,7 @@
 'use strict';
 
 const { interpolateName } = require('@formatjs/ts-transformer');
-const defaults = require('./lib/babel/defaults');
+const defaults = require('./defaults');
 
 /**
  * node.path.original is DEPRECATED in newer versions of @glimmer/syntax

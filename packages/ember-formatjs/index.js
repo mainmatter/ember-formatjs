@@ -1,7 +1,7 @@
 'use strict';
 
 const { addPlugin, hasPlugin } = require('ember-cli-babel-plugin-helpers');
-const defaults = require('./lib/babel/defaults');
+const defaults = require('babel-plugin-ember-formatjs/defaults');
 
 module.exports = {
 	name: require('./package').name,
@@ -24,7 +24,7 @@ module.exports = {
 	},
 
 	_setupBabel() {
-		const pluginPath = require.resolve('./babel-plugin');
+		const pluginPath = require.resolve('babel-plugin-ember-formatjs');
 		const config = this.addonOptions();
 		const app = this._findHost();
 
@@ -52,7 +52,7 @@ module.exports = {
 		return {
 			name: 'ember-intl/template-plugin',
 			ext: 'hbs',
-			plugin: require('./template-plugin')(options),
+			plugin: require('babel-plugin-ember-formatjs/template-plugin')(options),
 			baseDir: () => {
 				return __dirname;
 			},

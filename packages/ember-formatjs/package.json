@@ -13,18 +13,14 @@
   "license": "MIT",
   "author": "",
   "files": [
-    "index.js",
-    "babel-plugin.js",
-    "template-plugin.js",
-    "lib"
+    "index.js"
   ],
   "scripts": {
     "prepack": "cp ../../README.md .",
     "test:node": "mocha node-tests"
   },
   "dependencies": {
-    "@babel/helper-plugin-utils": "7.26.5",
-    "@formatjs/ts-transformer": "4.4.19",
+    "babel-plugin-ember-formatjs": "workspace:*",
     "ember-cli-babel-plugin-helpers": "1.1.1"
   },
   "peerDependencies": {

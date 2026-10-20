@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const { join } = require('node:path');
 const babel = require('@babel/core');
 
-const plugin = require('../../../babel-plugin');
+const plugin = require('../../../src');
 
 const APP_FILE = join(process.cwd(), 'app', 'controllers', 'greeting.js');
 const ADDON_FILE = join(process.cwd(), 'node_modules', 'ember-intl', 'services', 'intl.js');

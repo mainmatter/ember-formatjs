@@ -1,6 +1,6 @@
 const { join } = require('path');
 const pluginTester = require('babel-plugin-tester').pluginTester;
-const plugin = require('../../../lib/babel/format-message-import-to-t');
+const plugin = require('../../../src/format-message-import-to-t');
 
 pluginTester({
 	plugin,
