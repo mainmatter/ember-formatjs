@@ -1,5 +1,4 @@
 'use strict';
-/* eslint-env node */
 
 const { interpolateName } = require('@formatjs/ts-transformer');
 const defaults = require('./lib/babel/defaults');
