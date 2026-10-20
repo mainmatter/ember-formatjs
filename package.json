@@ -21,12 +21,7 @@
   "dependencies": {
     "@babel/helper-plugin-utils": "7.26.5",
     "@formatjs/ts-transformer": "3.13.23",
-    "broccoli-stew": "3.0.0",
-    "calculate-cache-key-for-tree": "2.0.0",
-    "ember-cli-babel": "8.2.0",
-    "ember-cli-babel-plugin-helpers": "1.1.1",
-    "ember-cli-htmlbars": "6.3.0",
-    "ember-cli-version-checker": "5.1.2"
+    "ember-cli-babel-plugin-helpers": "1.1.1"
   },
   "devDependencies": {
     "@babel/core": "7.26.10",
