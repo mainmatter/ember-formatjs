@@ -7,11 +7,14 @@ const { name: packageName } = require('../../package.json');
 
 /**
  * Runs the transform the way a build does, through babel-plugin-ember-template-compilation.
- * v2 is what ember-cli-htmlbars uses. It is installed under an alias, and its browser
- * entry is used because the node entry requires ember-source's template compiler even
- * when `targetFormat: 'hbs'` means none is needed.
+ * v2 is what ember-cli-htmlbars uses and v4 is what Embroider uses. v2 is installed under
+ * an alias, and its browser entry is used because the node entry requires ember-source's
+ * template compiler even when `targetFormat: 'hbs'` means none is needed.
  */
-const COMPILERS = [['v2 (ember-cli-htmlbars)', 'babel-plugin-ember-template-compilation-v2/browser']];
+const COMPILERS = [
+	['v2 (ember-cli-htmlbars)', 'babel-plugin-ember-template-compilation-v2/browser'],
+	['v4 (Embroider)', 'babel-plugin-ember-template-compilation'],
+];
 
 // The template plugin treats `process.cwd()` as the app, which is this repo while tests run.
 const APP_FILE = join(process.cwd(), 'app', 'components', 'greeting.js');
@@ -97,6 +100,15 @@ describe('template-plugin: module identification', function () {
 
 	it('accepts a top-level env.moduleName', function () {
 		assert.equal(nameFor({ meta: {}, moduleName: APP_FILE }), REAL);
+	});
+
+	it('accepts env.filename alone, which is all v4 sets', function () {
+		assert.equal(nameFor({ meta: {}, filename: APP_FILE }), REAL);
+	});
+
+	it('ignores a template it cannot place, rather than throwing', function () {
+		assert.equal(nameFor({}), NOOP);
+		assert.equal(nameFor({ meta: {} }), NOOP);
 	});
 
 	it('ignores templates from node_modules', function () {
