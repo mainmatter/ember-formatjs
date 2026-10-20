@@ -18,7 +18,7 @@ importers:
         specifier: 1.1.1
         version: 1.1.1
       ember-intl:
-        specifier: ^7.1.8
+        specifier: ^7.1.8 || ^8.0.0 || ^9.0.0
         version: 7.1.8(@ember/test-helpers@5.2.1(@babel/core@7.26.10)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.26.10))(rsvp@4.8.5)(webpack@5.99.6)))(typescript@5.8.3)(webpack@5.99.6)
     devDependencies:
       '@babel/core':
