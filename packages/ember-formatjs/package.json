@@ -1,0 +1,44 @@
+{
+  "name": "ember-formatjs",
+  "version": "0.1.3",
+  "description": "Combine formatjs API with ember-intl",
+  "keywords": [
+    "ember-addon"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:mainmatter/ember-formatjs.git",
+    "directory": "packages/ember-formatjs"
+  },
+  "license": "MIT",
+  "author": "",
+  "files": [
+    "index.js",
+    "babel-plugin.js",
+    "template-plugin.js",
+    "lib"
+  ],
+  "scripts": {
+    "prepack": "cp ../../README.md .",
+    "test:node": "mocha node-tests"
+  },
+  "dependencies": {
+    "@babel/helper-plugin-utils": "7.26.5",
+    "@formatjs/ts-transformer": "4.4.19",
+    "ember-cli-babel-plugin-helpers": "1.1.1"
+  },
+  "peerDependencies": {
+    "ember-intl": "^7.1.8 || ^8.0.0 || ^9.0.0"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "ember": {
+    "edition": "octane"
+  },
+  "ember-addon": {
+    "before": [
+      "ember-cli-htmlbars"
+    ]
+  }
+}
