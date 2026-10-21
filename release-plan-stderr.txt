@@ -1,0 +1,7 @@
+# Unlabeled Changes
+
+* `ember-formatjs`
+  * [#17](https://github.com/mainmatter/ember-formatjs/pull/17) Drop dependencies the addon doesn't use ([@aklkv](https://github.com/aklkv))
+
+
+*Cannot plan release until the above changes are labeled*.
