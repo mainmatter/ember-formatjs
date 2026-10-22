@@ -1,6 +1,7 @@
 const { declare } = require('@babel/helper-plugin-utils');
 const { interpolateName } = require('@formatjs/ts-transformer');
 const defaults = require('./defaults');
+const isAppCode = require('./is-app-code');
 
 const getVariableValue = (args, variable, preserveWhitespace) => {
 	const property = args?.properties?.find?.(p => p.key?.name === variable);
@@ -24,6 +25,15 @@ const getVariableValue = (args, variable, preserveWhitespace) => {
 };
 
 /**
+ * Only the FormatJS authoring shape is ours to rewrite: an object literal carrying
+ * defaultMessage or id. ember-intl calls its own formatMessage(descriptor, values) with a
+ * variable, and rewriting that turns the raw id pattern into a translation key.
+ */
+const isFormatJsDescriptor = node =>
+	node?.type === 'ObjectExpression' &&
+	node.properties.some(p => p.key?.name === 'defaultMessage' || p.key?.name === 'id');
+
+/**
  * This plugin is specifically for updating the version of formatMessage from the intl service.
  *
  * e.g.: this.intl.formatMessage(...)
@@ -38,16 +48,25 @@ module.exports = declare((api, pluginOptions) => {
 		name: 'ember-intl/formatjs/format-message-replace',
 
 		visitor: {
-			CallExpression(path) {
+			CallExpression(path, state) {
+				if (!isAppCode(state.filename)) {
+					return;
+				}
+
 				if (
 					(path.node?.callee?.object?.name === 'intl' || // intl.formatMessage()
 						path.node?.callee?.object?.property?.name === 'intl') && // <obj>.intl.formatMessage()
 					path.node?.callee?.property?.name === 'formatMessage'
 				) {
-					path.node.callee.property.name = 't';
-
 					const args = path.node?.arguments;
 					const firstHash = args?.[0];
+
+					if (!isFormatJsDescriptor(firstHash)) {
+						return;
+					}
+
+					path.node.callee.property.name = 't';
+
 					const valuesHash = args?.[1];
 					const defaultMessage = getVariableValue(firstHash, 'defaultMessage', preserveWhitespace);
 					const description = getVariableValue(firstHash, 'description', true);
@@ -63,13 +82,14 @@ module.exports = declare((api, pluginOptions) => {
 						},
 					);
 
-					path.node.arguments[0] = {
+					const key = {
 						type: 'StringLiteral',
 						value: translationId || id,
 					};
 
-					path.node.arguments[1] = valuesHash;
-					path.node.arguments[2] = null;
+					// Assigning into the arguments by index leaves holes, which print as
+					// `intl.t('key', )`.
+					path.node.arguments = valuesHash ? [key, valuesHash] : [key];
 				}
 			},
 		},
