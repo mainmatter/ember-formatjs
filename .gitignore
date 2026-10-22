@@ -10,3 +10,6 @@ node_modules/
 .DS_Store
 .env*
 .eslintcache
+
+# copied from the root README when the package is packed
+/packages/ember-formatjs/README.md

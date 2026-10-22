@@ -1,0 +1,50 @@
+{
+  "name": "babel-plugin-ember-formatjs",
+  "version": "0.1.3",
+  "description": "Build-time transforms that rewrite FormatJS authoring sugar to ember-intl key-based calls",
+  "keywords": [
+    "babel",
+    "babel-plugin",
+    "ember",
+    "ember-intl",
+    "formatjs",
+    "i18n"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:mainmatter/ember-formatjs.git",
+    "directory": "packages/babel-plugin-ember-formatjs"
+  },
+  "license": "MIT",
+  "type": "commonjs",
+  "exports": {
+    ".": "./src/index.js",
+    "./template-plugin": "./src/template-plugin.js",
+    "./defaults": "./src/defaults.js",
+    "./package.json": "./package.json"
+  },
+  "main": "./src/index.js",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test:node": "mocha node-tests"
+  },
+  "dependencies": {
+    "@babel/helper-plugin-utils": "7.26.5",
+    "@formatjs/ts-transformer": "4.4.19"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.0.0 || ^8.0.0",
+    "babel-plugin-ember-template-compilation": ">= 2.0.0",
+    "ember-intl": "^7.1.8 || ^8.0.0 || ^9.0.0"
+  },
+  "peerDependenciesMeta": {
+    "babel-plugin-ember-template-compilation": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}

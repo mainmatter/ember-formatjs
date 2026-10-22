@@ -1,8 +1,7 @@
 'use strict';
-/* eslint-env node */
 
 const { interpolateName } = require('@formatjs/ts-transformer');
-const defaults = require('./lib/babel/defaults');
+const defaults = require('./defaults');
 
 /**
  * node.path.original is DEPRECATED in newer versions of @glimmer/syntax
@@ -76,11 +75,16 @@ function buildTransform(passedOptions) {
 	const options = Object.assign({}, defaults, passedOptions);
 
 	return function (env) {
-		const fileName = env.meta.moduleName ?? env.moduleName;
+		// babel-plugin-ember-template-compilation v4, which Embroider uses, sets only
+		// `filename`. Older compilers also set a module name, which classic builds give as
+		// `<app-name>/...` rather than a path, so any one of them can place the template.
+		const names = [env.meta?.moduleName, env.moduleName, env.filename].filter(Boolean);
 
-		if (!isRelevant(fileName)) {
+		if (!names.some(isRelevant)) {
 			return NOOP;
 		}
+
+		const fileName = names[0];
 
 		function transformHelper(node) {
 			const name = getValue(node.path);
