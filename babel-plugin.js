@@ -5,7 +5,7 @@ const formatMessageImportToT = require('./lib/babel/format-message-import-to-t')
 const formatMessageReplaceStrings = require('./lib/babel/format-message-replace-strings');
 
 module.exports = declare((api, pluginOptions) => {
-	api.assertVersion(7);
+	api.assertVersion('^7.0.0-0 || ^8.0.0-0');
 
 	// Each sub-plugin's state is separate
 	const toT = formatMessageImportToT(api, pluginOptions);

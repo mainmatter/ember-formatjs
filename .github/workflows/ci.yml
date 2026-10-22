@@ -8,7 +8,7 @@ on:
   pull_request: {}
 
 env:
-  NODE_VERSION: 20
+  NODE_VERSION: 24
 
 jobs:
   lint:
@@ -26,14 +26,40 @@ jobs:
       - run: pnpm lint:prettier
 
   test:
-    name: Node Tests
+    name: Node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [22, 24, 26]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm test:node
+
+  test-babel-7:
+    name: Node 20.19, Babel 7
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 20.19.0
           cache: pnpm
-      - run: pnpm install
+      # Babel 8 needs Node 22, so the lowest Node we support runs against Babel 7. An
+      # override reaches every copy, including the one babel-plugin-tester peers on.
+      - run: |
+          printf 'overrides:\n  "@babel/core": ^7\n  "@babel/plugin-transform-typescript": ^7\n' >> pnpm-workspace.yaml
+      - run: pnpm install --no-frozen-lockfile
+      - name: Check nothing resolves Babel 8
+        run: |
+          if pnpm ls -r --depth Infinity @babel/core | grep '@babel/core 8\.'; then
+            exit 1
+          fi
       - run: pnpm test:node
